@@ -30,7 +30,9 @@ SELECT
     (
         COUNT(
             DISTINCT CASE
-                WHEN DATE (coalesce(order_delivered_customer_date, '2018-01-01')) < DATE (order_estimated_delivery_date) THEN order_id
+                WHEN DATE (
+                    coalesce(order_delivered_customer_date, '2018-01-01')
+                ) < DATE (order_estimated_delivery_date) THEN order_id
             END
         ) * 1.0 / COUNT(
             DISTINCT CASE
@@ -47,12 +49,19 @@ SELECT
     max(totalFrete) maxFrete,
     min(totalFrete) as minFrete,
     avg(
-        JULIANDAY (coalesce(order_delivered_customer_date, '2018-01-01')) - JULIANDAY (order_approved_at)
+        JULIANDAY (
+            coalesce(order_delivered_customer_date, '2018-01-01')
+        ) - JULIANDAY (order_approved_at)
     ) as qtdDiasAprovadoEngtrega,
     avg(
-        JULIANDAY (coalesce(order_delivered_customer_date, '2018-01-01')) - JULIANDAY (order_delivered_carrier_date)
+        JULIANDAY (
+            coalesce(order_delivered_customer_date, '2018-01-01')
+        ) - JULIANDAY (order_delivered_carrier_date)
     ) as qtdDiasPedidoEngtrega,
-    avg(JULIANDAY (order_estimated_delivery_date) - JULIANDAY (coalesce(order_delivered_customer_date, '2018-01-01'))
+    avg(
+        JULIANDAY (order_estimated_delivery_date) - JULIANDAY (
+            coalesce(order_delivered_customer_date, '2018-01-01')
+        )
     ) as qtdDiasPromessaEngtrega
 FROM
     tb_pedido
