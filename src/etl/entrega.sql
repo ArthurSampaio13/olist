@@ -26,6 +26,7 @@ WITH
             t1.order_estimated_delivery_date
     )
 SELECT
+    '2018-01-01' as dtRefencia,
     seller_id,
     (
         COUNT(
@@ -66,4 +67,4 @@ SELECT
 FROM
     tb_pedido
 GROUP BY
-    1
+    seller_id
