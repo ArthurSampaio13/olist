@@ -6,7 +6,7 @@ WITH
             t1.order_status,
             t1.order_approved_at,
             t1.order_delivered_carrier_date,
-            t1.order_delivered_customer_date,
+            t1.order_purchase_timestamp,
             t1.order_estimated_delivery_date,
             sum(freight_value) as totalFrete
         FROM
@@ -22,7 +22,7 @@ WITH
             t1.order_status,
             t1.order_approved_at,
             t1.order_delivered_carrier_date,
-            t1.order_delivered_customer_date,
+            t1.order_purchase_timestamp,
             t1.order_estimated_delivery_date
     )
 SELECT
@@ -31,7 +31,7 @@ SELECT
         COUNT(
             DISTINCT CASE
                 WHEN DATE (
-                    coalesce(order_delivered_customer_date, '2018-01-01')
+                    coalesce(order_purchase_timestamp, '2018-01-01')
                 ) < DATE (order_estimated_delivery_date) THEN order_id
             END
         ) * 1.0 / COUNT(
@@ -50,17 +50,17 @@ SELECT
     min(totalFrete) as minFrete,
     avg(
         JULIANDAY (
-            coalesce(order_delivered_customer_date, '2018-01-01')
+            coalesce(order_purchase_timestamp, '2018-01-01')
         ) - JULIANDAY (order_approved_at)
     ) as qtdDiasAprovadoEngtrega,
     avg(
         JULIANDAY (
-            coalesce(order_delivered_customer_date, '2018-01-01')
+            coalesce(order_purchase_timestamp, '2018-01-01')
         ) - JULIANDAY (order_delivered_carrier_date)
     ) as qtdDiasPedidoEngtrega,
     avg(
         JULIANDAY (order_estimated_delivery_date) - JULIANDAY (
-            coalesce(order_delivered_customer_date, '2018-01-01')
+            coalesce(order_purchase_timestamp, '2018-01-01')
         )
     ) as qtdDiasPromessaEngtrega
 FROM

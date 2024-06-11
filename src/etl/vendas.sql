@@ -1,7 +1,8 @@
+--1:36:08
 WITH
     tb_pedido_item as (
         SELECT
-            t1.order_delivered_customer_date,
+            t1.order_purchase_timestamp,
             t2.*
         FROM
             tb_orders AS t1
@@ -15,10 +16,10 @@ WITH
         SELECT
             seller_id,
             count(DISTINCT order_id) as qtdPedidos,
-            count(DISTINCT DATE (order_delivered_customer_date)) as qtdDias,
+            count(DISTINCT DATE (order_purchase_timestamp)) as qtdDias,
             count(DISTINCT product_id) as qtdItens,
             (
-                JULIANDAY ('2018-01-01') - JULIANDAY (order_delivered_customer_date)
+                JULIANDAY ('2018-01-01') - JULIANDAY (order_purchase_timestamp)
             ) as qtdRecencia,
             sum(price) / count(DISTINCT order_id) as avgTicket,
             avg(price) as avgValorProduto,
@@ -53,12 +54,12 @@ WITH
     ),
     tb_life AS (
         SELECT
-            t1.order_delivered_customer_date,
+            t1.order_purchase_timestamp,
             t2.seller_id,
             sum(price) as LTV,
             max(
                 (
-                    JULIANDAY ('2018-01-01') - JULIANDAY (order_delivered_customer_date)
+                    JULIANDAY ('2018-01-01') - JULIANDAY (order_purchase_timestamp)
                 )
             ) as qtdDiasBase
         FROM
@@ -73,7 +74,7 @@ WITH
     tb_dtpedido as (
         SELECT DISTINCT
             seller_id,
-            date (order_delivered_customer_date) as dtPedido
+            date (order_purchase_timestamp) as dtPedido
         FROM
             tb_pedido_item
         ORDER BY
