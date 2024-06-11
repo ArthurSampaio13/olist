@@ -1,4 +1,3 @@
---1:36:08
 WITH
     tb_pedido_item as (
         SELECT
