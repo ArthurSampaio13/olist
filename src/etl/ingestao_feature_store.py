@@ -40,8 +40,8 @@ query = import_query("produto.sql")
 dt_start = '2017-01-01'
 dt_stop = '2018-01-01'
 
-paths = ['vendas.sql', 'produto.sql', 'pagamento.sql', 'entrega.sql', 'cliente.sql', 'avaliacao.sql']
-holders = ['vendas', 'produto', 'pagamento', 'entrega', 'cliente', 'avaliacao']
+paths = ['pagamentos.sql', 'entrega.sql', 'cliente.sql', 'avaliacao.sql']
+holders = ['pagamentos', 'entrega', 'cliente', 'avaliacao']
 
 for path, holder in zip(paths, holders):
     query = import_query(path)
