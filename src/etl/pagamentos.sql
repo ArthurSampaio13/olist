@@ -1,3 +1,4 @@
+CREATE TABLE fs_vendedor_pagamentos as
 with
     tb_pedidos as (
         SELECT DISTINCT

@@ -1,3 +1,4 @@
+CREATE TABLE fs_vendedor_cliente as
 WITH
     tb_join AS (
         SELECT DISTINCT
@@ -159,3 +160,4 @@ SELECT
     *
 from
     tb_group
+

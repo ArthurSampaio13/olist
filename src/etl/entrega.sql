@@ -1,3 +1,4 @@
+CREATE TABLE fs_vendedor_entrega as
 WITH
     tb_pedido as (
         SELECT
@@ -26,7 +27,7 @@ WITH
             t1.order_estimated_delivery_date
     )
 SELECT
-    '2018-01-01' as dtRefencia,
+    '2018-01-01' as dtReferencia,
     seller_id,
     (
         COUNT(

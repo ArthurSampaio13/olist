@@ -1,3 +1,4 @@
+CREATE TABLE fs_vendedor_vendas as
 WITH
     tb_pedido_item as (
         SELECT
