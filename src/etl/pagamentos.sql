@@ -7,8 +7,8 @@ with
             tb_orders AS t1
             LEFT JOIN tb_order_items AS t2 ON t1.order_id = t2.order_id
         WHERE
-            t1.order_purchase_timestamp < '2018-01-01'
-            AND t1.order_purchase_timestamp >= date ('2018-01-01', '-6 months')
+            t1.order_purchase_timestamp < '{date}'
+            AND t1.order_purchase_timestamp >= date ('{date}', '-6 months')
             AND seller_id is not null
     ),
     tb_join as (
@@ -187,7 +187,7 @@ with
     )
 INSERT INTO fs_vendedor_pagamentos
 select
-    '2018-01-01' as dtReferencia,
+    '{date}' as dtReferencia,
     date('now') as dtIngestao,
     t1.*,
     t2.avgQtdParcelas,

@@ -10,8 +10,8 @@ WITH
             LEFT JOIN tb_order_items as t2 on t1.order_id = t2.order_id
             LEFT JOIN tb_customers as t3 on t1.customer_id = t3.customer_id
         WHERE
-            t1.order_purchase_timestamp < '2018-01-01'
-            AND t1.order_purchase_timestamp >= date ('2018-01-01', '-6 months')
+            t1.order_purchase_timestamp < '{date}'
+            AND t1.order_purchase_timestamp >= date ('{date}', '-6 months')
             AND seller_id IS NOT NULL
     ),
     tb_group AS (
@@ -156,7 +156,7 @@ WITH
     )
 INSERT INTO fs_vendedor_cliente
 SELECT
-    '2018-01-01' as dtReferencia,
+    '{date}' as dtReferencia,
     date('now') as dtIngestao,
     *
 from

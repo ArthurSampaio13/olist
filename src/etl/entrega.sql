@@ -13,8 +13,8 @@ WITH
             tb_orders AS t1
             LEFT JOIN tb_order_items as t2 ON t1.order_id = t2.order_id
         WHERE
-            t1.order_purchase_timestamp < '2018-01-01'
-            AND t1.order_purchase_timestamp >= date ('2018-01-01', '-6 months')
+            t1.order_purchase_timestamp < '{date}'
+            AND t1.order_purchase_timestamp >= date ('{date}', '-6 months')
             AND seller_id IS NOT NULL
         GROUP BY
             t1.order_id,
@@ -27,14 +27,14 @@ WITH
     )
 INSERT INTO fs_vendedor_entrega
 SELECT
-    '2018-01-01' as dtReferencia,
+    '{date}' as dtReferencia,
     date('now') as dtIngestao,
     seller_id,
     (
         COUNT(
             DISTINCT CASE
                 WHEN DATE (
-                    coalesce(order_purchase_timestamp, '2018-01-01')
+                    coalesce(order_purchase_timestamp, '{date}')
                 ) < DATE (order_estimated_delivery_date) THEN order_id
             END
         ) * 1.0 / COUNT(
@@ -53,17 +53,17 @@ SELECT
     min(totalFrete) as minFrete,
     avg(
         JULIANDAY (
-            coalesce(order_purchase_timestamp, '2018-01-01')
+            coalesce(order_purchase_timestamp, '{date}')
         ) - JULIANDAY (order_approved_at)
     ) as qtdDiasAprovadoEngtrega,
     avg(
         JULIANDAY (
-            coalesce(order_purchase_timestamp, '2018-01-01')
+            coalesce(order_purchase_timestamp, '{date}')
         ) - JULIANDAY (order_delivered_carrier_date)
     ) as qtdDiasPedidoEngtrega,
     avg(
         JULIANDAY (order_estimated_delivery_date) - JULIANDAY (
-            coalesce(order_purchase_timestamp, '2018-01-01')
+            coalesce(order_purchase_timestamp, '{date}')
         )
     ) as qtdDiasPromessaEngtrega
 FROM

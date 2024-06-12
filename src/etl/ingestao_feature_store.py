@@ -25,7 +25,7 @@ def import_query(path):
 
 def process_date(query, date, engine, holder):
     with engine.connect() as connection:
-        delete = sqlalchemy.text(f"DELETE FROM fs_vendedor_{holder} WHERE dtReferencia = {date}")
+        delete = sqlalchemy.text(f"DELETE FROM fs_vendedor_{holder} WHERE dtReferencia = :date")
         connection.execute(delete, {"date": date})
         
         query = query.format(date=date)
@@ -35,11 +35,13 @@ def process_date(query, date, engine, holder):
 
 engine = sqlalchemy.create_engine("sqlite:///../../data/olist.db")
 
-paths = ['produto.sql', 'pagamentos.sql', 'entrega.sql', 'cliente.sql', 'avaliacao.sql']
-holders = ['produto', 'pagamentos', 'entrega', 'cliente', 'avaliacao']
+query = import_query("produto.sql")
 
 dt_start = '2017-01-01'
 dt_stop = '2018-01-01'
+
+paths = ['vendas.sql', 'produto.sql', 'pagamento.sql', 'entrega.sql', 'cliente.sql', 'avaliacao.sql']
+holders = ['vendas', 'produto', 'pagamento', 'entrega', 'cliente', 'avaliacao']
 
 for path, holder in zip(paths, holders):
     query = import_query(path)
