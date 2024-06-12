@@ -1,4 +1,3 @@
-CREATE TABLE fs_vendedor_pagamentos as
 with
     tb_pedidos as (
         SELECT DISTINCT
@@ -186,8 +185,10 @@ with
         GROUP BY
             seller_id
     )
+INSERT INTO fs_vendedor_pagamentos
 select
     '2018-01-01' as dtReferencia,
+    date('now') as dtIngestao,
     t1.*,
     t2.avgQtdParcelas,
     t2.medianaQtdParcelas,

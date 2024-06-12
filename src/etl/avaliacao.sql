@@ -1,4 +1,3 @@
-CREATE TABLE fs_vendedor_avaliacao as
 WITH
     tb_pedido AS (
         SELECT DISTINCT
@@ -32,8 +31,10 @@ WITH
         GROUP BY
             seller_id
     )
+INSERT INTO fs_vendedor_avaliacao
 SELECT
     '2018-01-01' AS dtReferencia,
+    date('now') as dtIngestao,
     *
 FROM
     tb_summary;

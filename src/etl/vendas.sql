@@ -1,4 +1,3 @@
-CREATE TABLE fs_vendedor_vendas as
 WITH
     tb_pedido_item as (
         SELECT
@@ -8,8 +7,8 @@ WITH
             tb_orders AS t1
             LEFT JOIN tb_order_items as t2 ON t1.order_id = t2.order_id
         WHERE
-            t1.order_purchase_timestamp < '2018-01-01'
-            AND t1.order_purchase_timestamp >= date ('2018-01-01', '-6 months')
+            t1.order_purchase_timestamp < '{date}'
+            AND t1.order_purchase_timestamp >= date ('{date}', '-6 months')
             AND seller_id IS NOT NULL
     ),
     tb_summary as (
@@ -19,7 +18,7 @@ WITH
             count(DISTINCT DATE (order_purchase_timestamp)) as qtdDias,
             count(DISTINCT product_id) as qtdItens,
             (
-                JULIANDAY ('2018-01-01') - JULIANDAY (order_purchase_timestamp)
+                JULIANDAY ('{date}') - JULIANDAY (order_purchase_timestamp)
             ) as qtdRecencia,
             sum(price) / count(DISTINCT order_id) as avgTicket,
             avg(price) as avgValorProduto,
@@ -59,14 +58,14 @@ WITH
             sum(price) as LTV,
             max(
                 (
-                    JULIANDAY ('2018-01-01') - JULIANDAY (order_purchase_timestamp)
+                    JULIANDAY ('{date}') - JULIANDAY (order_purchase_timestamp)
                 )
             ) as qtdDiasBase
         FROM
             tb_orders AS t1
             LEFT JOIN tb_order_items as t2 ON t1.order_id = t2.order_id
         WHERE
-            t1.order_purchase_timestamp < '2018-01-01'
+            t1.order_purchase_timestamp < '{date}'
             AND seller_id IS NOT NULL
         GROUP BY
             t2.seller_id
@@ -102,20 +101,18 @@ WITH
         GROUP BY
             seller_id
     )
+INSERT INTO fs_vendedor_vendas
 SELECT
-    '2018-01-01' as dtReferencia,
+    '{date}' as dtReferencia,
+    date('now') as dtIngestao,
     t1.*,
     t2.minVlPedido,
     t2.maxVlPedido,
     t3.LTV,
     t3.qtdDiasBase,
     t4.avgIntervaloVendas
-
-
 FROM
     tb_summary AS t1
     LEFT JOIN tb_min_max AS t2 ON t1.seller_id = t2.seller_id
-
     LEFT JOIN tb_life as t3 ON t1.seller_id = t3.seller_id
-
     LEFT JOIN tb_invervalo as t4 ON t1.seller_id = t4.seller_id

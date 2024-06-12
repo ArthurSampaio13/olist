@@ -1,4 +1,3 @@
-CREATE TABLE fs_vendedor_entrega as
 WITH
     tb_pedido as (
         SELECT
@@ -26,8 +25,10 @@ WITH
             t1.order_purchase_timestamp,
             t1.order_estimated_delivery_date
     )
+INSERT INTO fs_vendedor_entrega
 SELECT
     '2018-01-01' as dtReferencia,
+    date('now') as dtIngestao,
     seller_id,
     (
         COUNT(

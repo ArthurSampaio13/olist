@@ -1,4 +1,3 @@
-CREATE TABLE fs_vendedor_cliente as
 WITH
     tb_join AS (
         SELECT DISTINCT
@@ -155,8 +154,10 @@ WITH
         GROUP BY
             seller_id
     )
+INSERT INTO fs_vendedor_cliente
 SELECT
     '2018-01-01' as dtReferencia,
+    date('now') as dtIngestao,
     *
 from
     tb_group

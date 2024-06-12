@@ -1,4 +1,3 @@
-CREATE TABLE fs_vendedor_produto as
 WITH
     tb_join as (
         SELECT DISTINCT
@@ -9,8 +8,8 @@ WITH
             LEFT JOIN tb_order_items AS t2 ON t1.order_id = t2.order_id
             LEFT JOIN tb_products as t3 ON t2.product_id = t3.product_id
         WHERE
-            t1.order_purchase_timestamp < '2018-01-01'
-            AND t1.order_purchase_timestamp >= date ('2018-01-01', '-6 months')
+            t1.order_purchase_timestamp < '{date}'
+            AND t1.order_purchase_timestamp >= date ('{date}', '-6 months')
             AND t2.seller_id IS NOT NULL
     ),
     tb_summary as (
@@ -107,9 +106,10 @@ WITH
         GROUP BY
             seller_id
     )
-
+INSERT INTO fs_vendedor_produto
 SELECT
-    '2018-01-01' as dtReferencia,
+    '{date}' as dtReferencia,
+    date('now') as dtIngestao,
     *
 FROM
     tb_summary
