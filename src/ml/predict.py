@@ -31,6 +31,3 @@ df_extract = (df_extract.set_index('seller_id')
 df_extract.columns = ['seller_id', 'descClass', 'Score']
 df_extract['descModel'] = 'Churn Vendedor'
 df_extract['dtScore'] = datetime.datetime.now()
-# %%
-
-# %%
