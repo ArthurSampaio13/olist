@@ -81,8 +81,11 @@ model = tree.DecisionTreeClassifier()
 
 # %%
 model_pipe = pipeline.Pipeline([("Imputer -1", imputer_minus_1),
-                               "Imputer 0", imputer_0,
-                               "Decision Tree", model])
+                               ("Imputer 0", imputer_0),
+                               ("Decision Tree", model)])
 # %%
 model_pipe.fit(X_train, y_train)
+# %%
+model_pipe.predict(X_test)
+model_pipe.predict_proba(X_test)
 # %%
