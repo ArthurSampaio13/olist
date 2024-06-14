@@ -14,6 +14,7 @@ engine = sqlalchemy.create_engine("sqlite:///../../data/olist.db")
 conn = sqlite3.connect("../../data/olist.db")
 query = "SELECT * FROM fs_join"
 df = pd.read_sql_query(query, conn)
+
 # %%
 # ETL
 predict = model.predict_proba(df[model.feature_names_in_])
@@ -31,3 +32,9 @@ df_extract = (df_extract.set_index('seller_id')
 df_extract.columns = ['seller_id', 'descClass', 'Score']
 df_extract['descModel'] = 'Churn Vendedor'
 df_extract['dtScore'] = datetime.datetime.now()
+# %%
+# Deploy em batch
+df_extract.to_sql(name = 'olist_models',
+                  con=conn,
+                  if_exists='append')
+
